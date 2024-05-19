@@ -10,6 +10,8 @@ import {CreateTaskDialogComponent} from '../dialogs/create-task-dialog/create-ta
 import {TasksService} from '../../services/tasks.service';
 import {NamespaceTaskComponent} from '../namespace-task/namespace-task.component';
 import {NamespaceUI} from '../../models/ui/namespaces-ui';
+import {Task} from '../../models/task';
+import {FreezeTaskDialogComponent} from '../dialogs/freeze-task-dialog/freeze-task-dialog.component';
 
 @Component({
   selector: 'app-namespace',
@@ -46,5 +48,28 @@ export class NamespaceComponent {
         this.taskService.addTask(task);
       }
     });
+  }
+
+  updateTaskCompletion(task: Task, isCompleted: boolean) {
+    this.taskService.updateTask(task.id, {isCompleted})
+    console.log('updateTaskCompletion', task, isCompleted);
+  }
+
+  deleteTask(task: Task) {
+    console.log('%c ---> DELETE ', 'color: #de4209', task);
+    this.taskService.deleteTask(task);
+  }
+
+  freezeTask(task: Task) {
+    console.log('%c ---> FREEZE ', 'color: #de4209', task);
+    const dialogRef = this.dialog.open(FreezeTaskDialogComponent);
+    dialogRef.afterClosed().subscribe(reason => {
+      this.taskService.updateTask(task.id, {isFrozen: true, frozenReason: reason || null});
+    })
+  }
+
+  unfreezeTask(task: Task) {
+    console.log('%c ---> UNFREEZE ', 'color: #de4209', task);
+    this.taskService.updateTask(task.id, {isFrozen: false, frozenReason: null});
   }
 }

@@ -4,5 +4,5 @@ export interface Namespace {
   priority: number;
   color?: string;
   focusColor?: string;
-  isFrozen?: boolean;
+  isShown?: boolean;
 }

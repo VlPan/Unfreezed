@@ -3,12 +3,20 @@ body {
   padding: 0;
 }
 
+mat-chip {
+  cursor: pointer;
+}
+
 .app-root {
   margin: 0 auto;
   max-width: 1800px;
   padding: 0 15px;
-  padding-top: 50px;
+  padding-top: 35px;
   height: 94vh;
+}
+
+.chips-panel {
+  margin-bottom: 15px;
 }
 
 .app-namespaces {

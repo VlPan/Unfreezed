@@ -29,6 +29,23 @@ export class TasksService {
     this.updateTasks(tasks);
   }
 
+  updateTask(id: string, newState: Partial<Task>) {
+    let tasks = this.getTasks()
+    let taskToUpdate = tasks.find(t => t.id === id);
+    let index = tasks.findIndex(t => t.id === id);
+    taskToUpdate = {...taskToUpdate, ...newState, id};
+
+    tasks[index] = taskToUpdate
+
+    console.log('tasks after update ', tasks);
+    this.updateTasks(tasks);
+  }
+
+  deleteTask(task: Task) {
+    const tasks = this.getTasks().filter(t => t.id !== task.id);
+    this.updateTasks(tasks);
+  }
+
   private getTasks() {
     return this.localStorageService.get<Task[]>(TASK_KEY) || [];
   }

@@ -1,7 +1,44 @@
+
 .namespace-task {
   padding: 10px;
   border-radius: 10px;
   background-color: azure;
   width: 80%;
   margin: 0 auto;
+
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.title {
+  // cursor: pointer;
+  // margin-left: 15px;
+}
+
+.task--completed {
+  background-color: gainsboro;
+}
+
+.task--frozen {
+  background-color: #115d8a;
+  color: white;
+}
+
+.delete {
+  color: #f44336 !important;
+  font-weight: 600;
+}
+
+.menu {margin-left:auto;}
+
+.freeze {
+  color: #87CEFA !important;
+  font-weight: 600;
+}
+
+.unfreeze {
+  color: orange !important;
+  font-weight: 600;
 }

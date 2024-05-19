@@ -2,6 +2,9 @@ import { Injectable, Signal, computed, signal } from '@angular/core';
 import {NamespacesService} from './namespaces.service';
 import {TasksService} from './tasks.service';
 import {NamespaceUI} from '../models/ui/namespaces-ui';
+import {sortByBooleanReversed} from '../helpers/sort';
+import {Namespace} from '../models/namespace';
+import {Task} from '../models/task';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +19,15 @@ export class RepresentationService {
     this.namespacesUI = computed(() =>  { 
       let namespaces = this.namespaceService.namespaces();
       const tasks = this.taskService.tasks();
-
-      // namespaces = [namespaces[0], namespaces[1], namespaces[3]]; // todo: remove
-
+ 
       return namespaces.map((namespace) => {
-        const relatedTasks = tasks.filter(task => task.namespaceId === namespace.id);
-        return {...namespace, tasks: relatedTasks}
+        const relatedTasks: Task[] = tasks.filter(task => task.namespaceId === namespace.id)
+        .sort((t1, t2 ) => sortByBooleanReversed(t1.isCompleted, t2.isCompleted))
+        .sort((t1, t2 ) => sortByBooleanReversed(t1.isFrozen, t2.isFrozen));
+
+        const allFrozen = relatedTasks.every(t => t.isFrozen)
+
+        return {...namespace, tasks: relatedTasks, isFrozen: allFrozen}
       })
     })
   }

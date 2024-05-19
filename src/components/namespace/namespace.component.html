@@ -8,7 +8,13 @@
   </mat-card-actions>
   <mat-card-content>
     @for (task of namespace.tasks; track task.id) {
-      <app-namespace-task [task]="task"></app-namespace-task>
+      <app-namespace-task [task]="task" 
+      (taskToggled)="updateTaskCompletion(task, $event)" 
+      (deleted)="deleteTask(task)"
+      (freezed)="freezeTask(task)"
+      (unfreeze)="unfreezeTask(task)"
+      >
+    </app-namespace-task>
     }
   </mat-card-content>
 </mat-card>

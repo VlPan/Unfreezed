@@ -23,6 +23,18 @@ export class NamespacesService {
     this.localStorageService.set(NAMESPACE_KEY, namespaces);
     this.namespaces.set(namespaces);
   }
+
+  updateNamespace(id: string, newState: Partial<Namespace>) {
+    let namespaces = this.getNamespaces()
+    let namespaceToUpdate = namespaces.find(t => t.id === id);
+    let index = namespaces.findIndex(t => t.id === id);
+    namespaceToUpdate = {...namespaceToUpdate, ...newState, id};
+
+    namespaces[index] = namespaceToUpdate
+
+    console.log('namespaces after update ', namespaces);
+    this.updateNamespaces(namespaces);
+  }
     
   addNamespace(namespace: Namespace) {
     const namespaces = this.getNamespaces();
