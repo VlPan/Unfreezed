@@ -13,6 +13,8 @@ import {NamespaceUI} from '../../models/ui/namespaces-ui';
 import {Task} from '../../models/task';
 import {FreezeTaskDialogComponent} from '../dialogs/freeze-task-dialog/freeze-task-dialog.component';
 import {MatIconModule} from '@angular/material/icon';
+import {RandomTasksService} from '../../services/random-tasks.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-namespace',
@@ -32,7 +34,7 @@ export class NamespaceComponent {
   @Input() namespace: NamespaceUI;
   @Input() isFocused: boolean = false;
   @Output() focusedOnNamespace: EventEmitter<NamespaceUI['id']> = new EventEmitter();
-  constructor(public dialog: MatDialog, private readonly taskService: TasksService) {}
+  constructor(public dialog: MatDialog, private readonly taskService: TasksService, private randomTaskService: RandomTasksService) {}
 
   ngOnChanges() {
     console.log('namespace:: ', this.namespace);
@@ -52,6 +54,21 @@ export class NamespaceComponent {
         this.taskService.addTask(task);
       }
     });
+  }
+
+  createTaskFromRandom() {
+    const possibleRandomTasks = this.randomTaskService.randomTasks().filter(t => t.namespaceId === this.namespace.id);
+    const randomTask = this.randomTaskService.getRandomTask(possibleRandomTasks);
+
+    const task: Task = {
+      id: uuidv4(),
+      namespaceId: this.namespace.id,
+      title: randomTask.title,
+      isCompleted: false,
+      isFrozen: false,
+      frozenReason: null,
+    }
+    this.taskService.addTask(task);
   }
 
   updateTaskCompletion(task: Task, isCompleted: boolean) {
