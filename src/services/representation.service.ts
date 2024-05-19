@@ -35,7 +35,6 @@ export class RepresentationService {
       return withFrozen.map((namespace) => {
         const namespacesWithMorePriority = withFrozen.filter(n => n.priority < namespace.priority);
         const prevFrozen = namespacesWithMorePriority.every(n => n.isFrozen);
-        console.log(`FOR ${namespace.name}`, namespacesWithMorePriority);
 
         return {...namespace, isFrozen: !prevFrozen || namespace.tasks.length === 0}
       })
