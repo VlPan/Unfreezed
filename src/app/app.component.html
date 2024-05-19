@@ -2,7 +2,7 @@
   <section class="chips-panel">
       <mat-chip-set aria-label="Namespace statuses">
         @for (namespace of namespaces(); track namespace.id) {
-          <mat-chip [highlighted]="namespace.isShown  || !namespace.isFrozen" [color]="'primary'" (click)="toggleShown(namespace)">
+          <mat-chip [highlighted]="namespace.isShown || !namespace.isFrozen" [color]="'primary'" (click)="toggleShown(namespace)">
             {{namespace.name}}
           </mat-chip>
         }

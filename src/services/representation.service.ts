@@ -20,14 +20,24 @@ export class RepresentationService {
       let namespaces = this.namespaceService.namespaces();
       const tasks = this.taskService.tasks();
  
-      return namespaces.map((namespace) => {
+      const withFrozen = namespaces.map((namespace) => {
         const relatedTasks: Task[] = tasks.filter(task => task.namespaceId === namespace.id)
         .sort((t1, t2 ) => sortByBooleanReversed(t1.isCompleted, t2.isCompleted))
         .sort((t1, t2 ) => sortByBooleanReversed(t1.isFrozen, t2.isFrozen));
 
-        const allFrozen = relatedTasks.every(t => t.isFrozen)
+        const allFrozen = relatedTasks.every(t => t.isFrozen);
+
+        
 
         return {...namespace, tasks: relatedTasks, isFrozen: allFrozen}
+      })
+
+      return withFrozen.map((namespace) => {
+        const namespacesWithMorePriority = withFrozen.filter(n => n.priority < namespace.priority);
+        const prevFrozen = namespacesWithMorePriority.every(n => n.isFrozen);
+        console.log(`FOR ${namespace.name}`, namespacesWithMorePriority);
+
+        return {...namespace, isFrozen: !prevFrozen || namespace.tasks.length === 0}
       })
     })
   }
