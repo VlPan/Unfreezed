@@ -25,9 +25,7 @@ export class RepresentationService {
         .sort((t1, t2 ) => sortByBooleanReversed(t1.isCompleted, t2.isCompleted))
         .sort((t1, t2 ) => sortByBooleanReversed(t1.isFrozen, t2.isFrozen));
 
-        const allFrozen = relatedTasks.every(t => t.isFrozen);
-
-        
+        const allFrozen = relatedTasks.length > 0 ? relatedTasks.every(t => t.isFrozen) : false;
 
         return {...namespace, tasks: relatedTasks, isFrozen: allFrozen}
       })
@@ -36,7 +34,8 @@ export class RepresentationService {
         const namespacesWithMorePriority = withFrozen.filter(n => n.priority < namespace.priority);
         const prevFrozen = namespacesWithMorePriority.every(n => n.isFrozen);
 
-        return {...namespace, isFrozen: !prevFrozen || namespace.tasks.length === 0}
+        // return {...namespace, blockedByPriority: !prevFrozen || namespace.tasks.length === 0}
+        return {...namespace, blockedByPriority: !prevFrozen}
       })
     })
   }

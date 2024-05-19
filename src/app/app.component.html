@@ -2,7 +2,7 @@
   <section class="chips-panel">
       <mat-chip-set aria-label="Namespace statuses">
         @for (namespace of namespaces(); track namespace.id) {
-          <mat-chip [highlighted]="namespace.isShown || !namespace.isFrozen" [color]="'primary'" (click)="toggleShown(namespace)">
+          <mat-chip [highlighted]="isShown(namespace)" [color]="'primary'" (click)="toggleShown(namespace)" [disabled]="focusedNamespaceId()">
             {{namespace.name}}
           </mat-chip>
         }
@@ -10,9 +10,17 @@
   </section>
   <section class="app-namespaces">
     @for (namespace of namespaces(); track namespace.id) {
-      @if(namespace.isShown || !namespace.isFrozen) {
+      @if(isShown(namespace) && focusedNamespaceId() === null) {
         <app-namespace
           [namespace]="namespace"
+          [isFocused]="focusedNamespaceId() === namespace.id"
+          (focusedOnNamespace)="onNamespaceFocus(namespace)"
+        ></app-namespace>
+      } @else if(focusedNamespaceId() === namespace.id) {
+        <app-namespace
+          [namespace]="namespace"
+          [isFocused]="true"
+          (focusedOnNamespace)="onNamespaceFocus(namespace)"
         ></app-namespace>
       }
     }

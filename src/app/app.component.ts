@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   OnInit,
   Signal,
@@ -24,10 +25,11 @@ import { MatChipsModule } from '@angular/material/chips';
 })
 export class AppComponent implements OnInit {
   namespaces: Signal<NamespaceUI[]>;
+  focusedNamespaceId = signal(null);
   constructor(
     private readonly startupService: StartupService,
     private readonly representationService: RepresentationService,
-    private readonly namespaceService: NamespacesService
+    private readonly namespaceService: NamespacesService,
   ) {}
 
   ngOnInit() {
@@ -37,5 +39,27 @@ export class AppComponent implements OnInit {
 
   toggleShown(namespace: NamespaceUI) {
     this.namespaceService.updateNamespace(namespace.id, {isShown: !namespace.isShown});
+  }
+
+  isShown(namespace) {
+    return namespace.isShown || ( !namespace.isFrozen && !namespace.blockedByPriority);
+  }
+
+  onNamespaceFocus(namespace) {
+    const isAlreadyFocused = this.focusedNamespaceId() === namespace.id
+    if(isAlreadyFocused) {
+      this.focusedNamespaceId.set(null);
+      return;
+    } 
+    this.focusedNamespaceId.set(namespace.id);
+    this.hideAll();
+    this.namespaceService.updateNamespace(namespace.id, {isShown: true});
+  }
+
+  hideAll() {
+    const ns = this.namespaces();
+    for (const n of ns) {
+      this.namespaceService.updateNamespace(n.id, {isShown: false});
+    }
   }
 }

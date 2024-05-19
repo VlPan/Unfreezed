@@ -18,7 +18,9 @@ mat-card-actions {
 mat-card-header {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
+
 
 mat-card-content {
   display: flex;
@@ -28,4 +30,9 @@ mat-card-content {
   & > * {
     margin-bottom: 10px;
   }
+}
+
+.focus-icon {
+  cursor: pointer;
+  margin-left: 5px;
 }

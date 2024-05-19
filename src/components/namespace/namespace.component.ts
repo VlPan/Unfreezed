@@ -1,5 +1,5 @@
 import { CommonModule, NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import {Namespace} from '../../models/namespace';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -12,6 +12,7 @@ import {NamespaceTaskComponent} from '../namespace-task/namespace-task.component
 import {NamespaceUI} from '../../models/ui/namespaces-ui';
 import {Task} from '../../models/task';
 import {FreezeTaskDialogComponent} from '../dialogs/freeze-task-dialog/freeze-task-dialog.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-namespace',
@@ -20,7 +21,8 @@ import {FreezeTaskDialogComponent} from '../dialogs/freeze-task-dialog/freeze-ta
     MatButtonModule,
     MatCardModule,
     NgStyle,
-    NamespaceTaskComponent
+    NamespaceTaskComponent,
+    MatIconModule
   ],
   templateUrl: `namespace.component.html`,
   styleUrl: './namespace.component.scss',
@@ -28,6 +30,8 @@ import {FreezeTaskDialogComponent} from '../dialogs/freeze-task-dialog/freeze-ta
 })
 export class NamespaceComponent {
   @Input() namespace: NamespaceUI;
+  @Input() isFocused: boolean = false;
+  @Output() focusedOnNamespace: EventEmitter<NamespaceUI['id']> = new EventEmitter();
   constructor(public dialog: MatDialog, private readonly taskService: TasksService) {}
 
   ngOnChanges() {
@@ -71,5 +75,9 @@ export class NamespaceComponent {
   unfreezeTask(task: Task) {
     console.log('%c ---> UNFREEZE ', 'color: #de4209', task);
     this.taskService.updateTask(task.id, {isFrozen: false, frozenReason: null});
+  }
+
+  focusOnNamespace() {
+    this.focusedOnNamespace.emit(this.namespace.id);
   }
 }

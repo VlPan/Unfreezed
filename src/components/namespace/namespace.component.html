@@ -1,19 +1,22 @@
-<mat-card [ngStyle]="{'background-color': namespace.color}">
+<mat-card [ngStyle]="{'background-color': isFocused ? namespace.color : 'white'}">
   <mat-card-header>
+    <mat-icon class="focus-icon"
+              [ngStyle]="{'color': namespace.focusColor}"
+              (click)="focusOnNamespace()">adjust</mat-icon>
     <mat-card-title>{{namespace.name}}</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <button mat-button (click)="openCreateTaskDialog()">Create Task</button>
+    <button mat-button
+            (click)="openCreateTaskDialog()">Create Task</button>
     <button mat-button>Pick Random</button>
   </mat-card-actions>
   <mat-card-content>
     @for (task of namespace.tasks; track task.id) {
-      <app-namespace-task [task]="task" 
-      (taskToggled)="updateTaskCompletion(task, $event)" 
-      (deleted)="deleteTask(task)"
-      (freezed)="freezeTask(task)"
-      (unfreeze)="unfreezeTask(task)"
-      >
+    <app-namespace-task [task]="task"
+                        (taskToggled)="updateTaskCompletion(task, $event)"
+                        (deleted)="deleteTask(task)"
+                        (freezed)="freezeTask(task)"
+                        (unfreeze)="unfreezeTask(task)">
     </app-namespace-task>
     }
   </mat-card-content>
