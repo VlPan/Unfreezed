@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$my-typography: mat.define-typography-config(
+  $font-family: 'Open Sans'
+);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+ ),
+  typography: $my-typography,
+));
+
+@include mat.all-component-themes($my-theme);
+
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+  font-variation-settings:
+    "wdth" 100 !important;
+}

@@ -1,0 +1,10 @@
+<div class="app-root">
+  <section class="app-namespaces">
+    @for (namespace of namespaces(); track namespace.id) {
+      <app-namespace
+         [namespace]="namespace"
+      ></app-namespace>
+    }
+  </section>
+  <router-outlet />
+</div>

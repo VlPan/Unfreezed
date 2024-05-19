@@ -1,0 +1,14 @@
+<mat-card [ngStyle]="{'background-color': namespace.color}">
+  <mat-card-header>
+    <mat-card-title>{{namespace.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <button mat-button (click)="openCreateTaskDialog()">Create Task</button>
+    <button mat-button>Pick Random</button>
+  </mat-card-actions>
+  <mat-card-content>
+    @for (task of namespace.tasks; track task.id) {
+      <app-namespace-task [task]="task"></app-namespace-task>
+    }
+  </mat-card-content>
+</mat-card>
