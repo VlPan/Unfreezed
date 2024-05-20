@@ -17,6 +17,9 @@ mat-chip {
 
 .chips-panel {
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .app-namespaces {
@@ -36,3 +39,29 @@ mat-chip {
     margin-left: 20px;
   }
 }
+
+
+.points {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: 20px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.delete {
+  color: #f44336 !important;
+  font-weight: 600;
+}
+
+.green {
+  color: #21b52c !important;
+  font-weight: 600;
+}
+

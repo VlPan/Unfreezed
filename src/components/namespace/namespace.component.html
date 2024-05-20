@@ -9,6 +9,7 @@
     <button mat-button
             (click)="openCreateTaskDialog()">Create Task</button>
     <button mat-button (click)="createTaskFromRandom()">Pick Random</button>
+    <button mat-button (click)="nextTimer()">Timer ({{uiStateService.namespaceTimerMap()[namespace.id]?.next || 10}})</button>
   </mat-card-actions>
   <mat-card-content>
     @for (task of namespace.tasks; track task.id) {

@@ -16,11 +16,14 @@ import { NamespaceUI } from '../models/ui/namespaces-ui';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import {NgClass} from '@angular/common';
+import {UIStateService} from '../services/ui-state.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NamespaceComponent, MatIconModule, MatChipsModule, NgClass],
+  imports: [RouterOutlet, NamespaceComponent, MatIconModule, MatChipsModule, NgClass, MatButtonModule, MatMenuModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -32,6 +35,7 @@ export class AppComponent implements OnInit {
     private readonly startupService: StartupService,
     private readonly representationService: RepresentationService,
     private readonly namespaceService: NamespacesService,
+    public readonly uiStateService: UIStateService,
   ) {}
 
   private isDown = false;
@@ -101,5 +105,20 @@ export class AppComponent implements OnInit {
     const x = $event.pageX - this.namespacesEl.nativeElement.offsetLeft;
     const walk = (x - this.startX) * 1.5;
     this.namespacesEl.nativeElement.scrollLeft = this.scrollLeft - walk;
+  }
+
+  resetTimers() {
+    this.uiStateService.resetTimers();
+  }
+
+  resetScores() {
+    this.uiStateService.resetScores();
+  }
+
+  convertToScores() {
+    const time = this.uiStateService.totalTime();
+
+    this.uiStateService.addScores(time);
+    this.uiStateService.resetTimers();
   }
 }

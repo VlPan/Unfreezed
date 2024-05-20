@@ -13,6 +13,15 @@
           Show all
         </mat-chip>
       </mat-chip-set>
+      <div class="points">
+        <div class="stats">
+          <div>Time: {{uiStateService.totalTime()}} min</div> 
+          <div>Scores: {{uiStateService.scores()}}</div> 
+        </div>
+        <button mat-icon-button aria-label="score menu" [matMenuTriggerFor]="scoreMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
   </section>
   <section class="app-namespaces"
   [ngClass]="{'app-namespaces--isDragging': isDragging}" 
@@ -40,3 +49,20 @@
   </section>
   <router-outlet />
 </div>
+
+
+<mat-menu #scoreMenu="matMenu">
+  <!-- <button mat-menu-item class="edit">Edit</button> TODO: add later-->
+  <button mat-menu-item (click)="resetTimers()">
+    <mat-icon class="delete" aria-hidden="false" aria-label="reset" fontIcon="restart_alt"></mat-icon>
+    <span class="delete">Reset Timer</span>
+  </button>
+  <button mat-menu-item (click)="resetScores()">
+    <mat-icon class="delete" aria-hidden="false" aria-label="reset" fontIcon="cancel"></mat-icon>
+    <span class="delete">Reset Scores</span>
+  </button>
+  <button mat-menu-item color="primary" (click)="convertToScores()">
+    <mat-icon class="green" aria-hidden="false" aria-label="exchange" fontIcon="add_circle"></mat-icon>
+    <span class="green">Convert to Scores</span>
+  </button>
+</mat-menu>
