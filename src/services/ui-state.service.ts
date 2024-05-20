@@ -46,7 +46,16 @@ export class UIStateService {
 
   addScores(time: number) {
     const value: number = this.localStorageService.get(SCORES_KEY) || 0;
-    const newScores: number = value + time; // todo: change algo
+    const parts = time / 100;
+    const last = time % 100;
+    
+    const arr = Array(Math.floor(parts)).fill(100);
+    arr.push(last);
+
+    const scoresToAdd = arr.reduce((acc, cur, index) => {
+      return acc + (cur * (0.1 + (0.1 * index)));
+    }, 0);
+    const newScores: number = value + scoresToAdd;
     this.localStorageService.set(SCORES_KEY, newScores);
     this.scores.set(newScores);
   }
