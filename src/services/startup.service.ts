@@ -36,6 +36,18 @@ export class StartupService {
     },
     {
       id: uuidv4(),
+      namespaceId: this.Delivery,
+      title: 'Ask for work directly',
+      weight: 1,
+    },
+    {
+      id: uuidv4(),
+      namespaceId: this.Delivery,
+      title: 'Read emails / chats / etc',
+      weight: 1,
+    },
+    {
+      id: uuidv4(),
       namespaceId: this.Improvements,
       title: 'Look ugly code and propose to refactor it',
       weight: 1,

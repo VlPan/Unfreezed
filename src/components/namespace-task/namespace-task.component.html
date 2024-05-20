@@ -1,16 +1,17 @@
 <div [matTooltip]="task.frozenReason" class="namespace-task" [ngClass]="{'task--completed': task.isCompleted, 'task--frozen': task.isFrozen}">
-  <mat-checkbox [checked]="task.isCompleted" [disabled]="task.isFrozen" (change)="toggleTask($event)"></mat-checkbox>
-  <div class="title">
-    <span>{{task.title}}</span>
+  <div class="title-checkbox">
+    <mat-checkbox [checked]="task.isCompleted" [disabled]="task.isFrozen" (change)="toggleTask($event)"></mat-checkbox>
+    <div class="title">
+      <span>{{task.title}}</span>
+    </div>
   </div>
-
   <div class="menu">
     @if(task.attachedLinks?.length > 0) {
       <button mat-icon-button [matMenuTriggerFor]="links" aria-label="links-menu">
         <mat-icon>link</mat-icon>
       </button>
     }
-    <button  mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>more_vert</mat-icon>
     </button>
   </div>

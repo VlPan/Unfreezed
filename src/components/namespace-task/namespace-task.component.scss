@@ -3,20 +3,25 @@
   padding: 10px;
   border-radius: 10px;
   background-color: azure;
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 
 
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+}
+
+.title-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .title {
-  display: flex;
   align-items: center;
-  // cursor: pointer;
-  // margin-left: 15px;
+  word-break: break-word;
 }
 
 .task--completed {
@@ -36,7 +41,7 @@
 .menu {
   display: flex;
   align-items: center;
-  margin-left:auto;
+  justify-content: flex-end;
 }
 
 .freeze {
