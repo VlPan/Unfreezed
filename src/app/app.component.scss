@@ -12,7 +12,7 @@ mat-chip {
   max-width: 1800px;
   padding: 0 15px;
   padding-top: 35px;
-  height: calc(100vh - 35px - 15px - 40px);
+  height: calc(100vh - 35px - 15px - 50px);
 }
 
 .chips-panel {
@@ -26,6 +26,11 @@ mat-chip {
   overflow-y: auto;
   width: 100%;
   height: 100%;
+
+  &--isDragging {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+  }
 
   & > * {
     margin-left: 20px;

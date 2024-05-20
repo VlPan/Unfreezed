@@ -1,29 +1,31 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnInit,
   Signal,
-  WritableSignal,
+  ViewChild,
   signal,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { StartupService } from '../services/startup.service';
 import { NamespacesService } from '../services/namespaces.service';
-import { AsyncPipe } from '@angular/common';
 import { NamespaceComponent } from '../components/namespace/namespace.component';
 import { RepresentationService } from '../services/representation.service';
 import { NamespaceUI } from '../models/ui/namespaces-ui';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NamespaceComponent, MatIconModule, MatChipsModule],
+  imports: [RouterOutlet, NamespaceComponent, MatIconModule, MatChipsModule, NgClass],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
+  @ViewChild('namespacesEl') namespacesEl: ElementRef;
   namespaces: Signal<NamespaceUI[]>;
   focusedNamespaceId = signal(null);
   constructor(
@@ -31,6 +33,11 @@ export class AppComponent implements OnInit {
     private readonly representationService: RepresentationService,
     private readonly namespaceService: NamespacesService,
   ) {}
+
+  private isDown = false;
+  isDragging = false;
+  private startX;
+  private scrollLeft;
 
   ngOnInit() {
     this.startupService.startup();
@@ -61,5 +68,31 @@ export class AppComponent implements OnInit {
     for (const n of ns) {
       this.namespaceService.updateNamespace(n.id, {isShown: false});
     }
+  }
+
+  onMousedown($event) {
+    this.isDown = true;
+    this.isDragging = true;
+    
+    this.startX = $event.pageX - this.namespacesEl.nativeElement.offsetLeft;
+    this.scrollLeft = this.namespacesEl.nativeElement.scrollLeft;
+  }
+
+  onMouseleave() {
+    this.isDown = false;
+    this.isDragging = false;
+  }
+
+  onMouseup() {
+    this.isDown = false;
+    this.isDragging = false;
+  }
+
+  onMousemove($event) {
+    if(!this.isDown) return;
+    $event.preventDefault();
+    const x = $event.pageX - this.namespacesEl.nativeElement.offsetLeft;
+    const walk = (x - this.startX) * 1.5;
+    this.namespacesEl.nativeElement.scrollLeft = this.scrollLeft - walk;
   }
 }

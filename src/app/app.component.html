@@ -8,7 +8,14 @@
         }
       </mat-chip-set>
   </section>
-  <section class="app-namespaces">
+  <section class="app-namespaces"
+  [ngClass]="{'app-namespaces--isDragging': isDragging}" 
+    #namespacesEl
+    (mousedown)="onMousedown($event)"
+    (mouseleave)="onMouseleave()"
+    (mouseup)="onMouseup()"
+    (mousemove)="onMousemove($event)"
+  >
     @for (namespace of namespaces(); track namespace.id) {
       @if(isShown(namespace) && focusedNamespaceId() === null) {
         <app-namespace
