@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, effect, signal } from '@angular/core';
 import {LocalStorageService} from './local-storage.service';
 import {Task} from '../models/task';
+import {produce} from 'immer';
 
 export const TASK_KEY = 'unf_tasks'
 
@@ -8,45 +9,48 @@ export const TASK_KEY = 'unf_tasks'
   providedIn: 'root'
 })
 export class TasksService {
-  tasks = signal([]);
+  tasks = signal<Record<Task['id'], Task>>({});
 
   constructor(private readonly localStorageService: LocalStorageService) {
-    this.setTasks();
+    this.initTasks();
+
+    effect(() => {
+      const tasks = this.tasks();
+      this.localStorageService.set(TASK_KEY, tasks);
+    })
   }
 
-  setTasks() {
+  initTasks() {
     this.tasks.set(this.getTasks());
   }
 
-  updateTasks(tasks: Task[]) {
-    this.localStorageService.set(TASK_KEY, tasks);
-    this.tasks.set(tasks);
-  }
-  
   addTask(task: Task) {
-    const tasks = this.getTasks();
-    tasks.push(task);
-    this.updateTasks(tasks);
+    const tasks = this.tasks();
+    const nextTasks = produce(tasks, draft => {
+      draft[task.id] = task;
+    });
+    this.tasks.set(nextTasks);
   }
 
   updateTask(id: string, newState: Partial<Task>) {
-    let tasks = this.getTasks()
-    let taskToUpdate = tasks.find(t => t.id === id);
-    let index = tasks.findIndex(t => t.id === id);
-    taskToUpdate = {...taskToUpdate, ...newState, id};
-
-    tasks[index] = taskToUpdate
-
-    console.log('tasks after update ', tasks);
-    this.updateTasks(tasks);
+    let tasks = this.tasks();
+    const nextTasks = produce(tasks, draft => {
+      let taskToUpdate = draft[id];
+      taskToUpdate = {...taskToUpdate, ...newState};
+      draft[id] = taskToUpdate;
+    });
+    this.tasks.set(nextTasks);
   }
 
   deleteTask(task: Task) {
-    const tasks = this.getTasks().filter(t => t.id !== task.id);
-    this.updateTasks(tasks);
+    const tasks = this.tasks();
+    const nextTasks = produce(tasks, draft => {
+      delete draft[task.id];
+    })
+    this.tasks.set(nextTasks);
   }
 
   private getTasks() {
-    return this.localStorageService.get<Task[]>(TASK_KEY) || [];
+    return this.localStorageService.get<Record<Task['id'], Task>>(TASK_KEY) || {};
   }
 }

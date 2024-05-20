@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import {NamespacesService} from './namespaces.service';
-import {Namespace} from '../models/namespace';
-import {LocalStorageService} from './local-storage.service';
+import { NamespacesService } from './namespaces.service';
+import { Namespace } from '../models/namespace';
+import { LocalStorageService } from './local-storage.service';
 import { v4 as uuidv4 } from 'uuid';
-import {RandomTasksService} from './random-tasks.service';
-import {RandomTask} from '../models/trandom-task';
+import { RandomTasksService } from './random-tasks.service';
+import { RandomTask } from '../models/trandom-task';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StartupService {
-
   Delivery = uuidv4();
   Improvements = uuidv4();
   Learning = uuidv4();
@@ -109,7 +108,8 @@ export class StartupService {
     {
       id: uuidv4(),
       namespaceId: this.Experiments,
-      title: 'Ask AI for homework to use some new technology or improve current',
+      title:
+        'Ask AI for homework to use some new technology or improve current',
       weight: 1,
     },
     {
@@ -181,7 +181,8 @@ export class StartupService {
     {
       id: uuidv4(),
       namespaceId: this.Routine,
-      title: 'Write down typical routine tasks if always postpone and do them one by one',
+      title:
+        'Write down typical routine tasks if always postpone and do them one by one',
       weight: 1,
     },
     {
@@ -214,75 +215,78 @@ export class StartupService {
       title: 'New Restaurant Try',
       weight: 1,
     },
-  ]
+  ];
 
   private startupNamespaces: Namespace[] = [
-    { 
+    {
       id: this.Delivery,
       name: 'Delivery',
       priority: 1,
       color: '#87CEFA',
-      focusColor: '#1E90FF'
+      focusColor: '#1E90FF',
     },
-    { 
+    {
       id: this.Improvements,
       name: 'Improvements',
       priority: 1,
-      color: '#cab2ed', 
-      focusColor: '#ab8bd9'
+      color: '#cab2ed',
+      focusColor: '#ab8bd9',
     },
-    { 
+    {
       id: this.Learning,
       name: 'Learning',
       priority: 2,
       color: '#95F9E3',
-      focusColor: '#69EBD0'
+      focusColor: '#69EBD0',
     },
-    { 
+    {
       id: this.PET,
       name: 'PET',
       priority: 2,
       color: '#FFFFE0',
-      focusColor: '#FFD700'
+      focusColor: '#FFD700',
     },
-    { 
+    {
       id: this.Experiments,
       name: 'Experiments',
       priority: 2,
       color: '#D8BFD8',
-      focusColor: '#9370DB'
+      focusColor: '#9370DB',
     },
-    { 
+    {
       id: this.SecondBrain,
       name: 'Second Brain',
       priority: 3,
       color: '#F5DEB3',
-      focusColor: '#CD853F'
+      focusColor: '#CD853F',
     },
-    { 
+    {
       id: this.Reflection,
       name: 'Reflection',
       priority: 4,
       color: '#90EE90',
-      focusColor: '#228B22'
+      focusColor: '#228B22',
     },
-    { 
+    {
       id: this.Routine,
       name: 'Routine',
       priority: 5,
       color: '#D3D3D3',
-      focusColor: '#A9A9A9'
+      focusColor: '#A9A9A9',
     },
-    { 
+    {
       id: this.Pleasure,
       name: 'Pleasure',
       priority: 6,
       color: '#b2ebed',
-      focusColor: '#35b3b8'
+      focusColor: '#35b3b8',
     },
-  ]
-  
-  constructor(private readonly namespacesService: NamespacesService, private readonly randomTasksService: RandomTasksService) {}
+  ];
+
+  constructor(
+    private readonly namespacesService: NamespacesService,
+    private readonly randomTasksService: RandomTasksService
+  ) {}
 
   startup() {
     this.initNamespaces();
@@ -290,14 +294,22 @@ export class StartupService {
   }
 
   initNamespaces() {
-    if(!this.namespacesService.isNamespacesExist()) {
-      this.namespacesService.updateNamespaces(this.startupNamespaces)
+    if (!this.namespacesService.isNamespacesExist()) {
+      const map = this.startupNamespaces.reduce((result, item) => {
+        result[item.id] = item;
+        return result;
+      }, {});
+      this.namespacesService.namespaces.set(map);
     }
   }
 
   initRandomTasks() {
-    if(!this.randomTasksService.areRandomTasksExists()) {
-      this.randomTasksService.updateRandomTasks(this.randomTasks)
+    if (!this.randomTasksService.areRandomTasksExists()) {
+      const map = this.randomTasks.reduce((result, item) => {
+        result[item.id] = item;
+        return result;
+      }, {});
+      this.randomTasksService.randomTasks.set(map);
     }
   }
 }

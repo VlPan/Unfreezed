@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, effect, signal } from '@angular/core';
 import {LocalStorageService} from './local-storage.service';
 import {Namespace} from '../models/namespace';
-import {BehaviorSubject} from 'rxjs';
+import {produce} from 'immer';
 
 export const NAMESPACE_KEY = 'unf_namespaces'
 
@@ -9,44 +9,54 @@ export const NAMESPACE_KEY = 'unf_namespaces'
   providedIn: 'root'
 })
 export class NamespacesService {
-  namespaces = signal([]);
+  namespaces = signal<Record<Namespace['id'], Namespace>>({});
 
   constructor(private readonly localStorageService: LocalStorageService) {
-    this.setNamespaces();
+    this.initNamespaces();
+
+    effect(() => {
+      const namespaces = this.namespaces();
+      this.localStorageService.set(NAMESPACE_KEY, namespaces);
+    })
   }
 
-  setNamespaces() {
+  initNamespaces() {
     this.namespaces.set(this.getNamespaces());
   }
 
-  updateNamespaces(namespaces: Namespace[]) {
-    this.localStorageService.set(NAMESPACE_KEY, namespaces);
-    this.namespaces.set(namespaces);
-  }
-
   updateNamespace(id: string, newState: Partial<Namespace>) {
-    let namespaces = this.getNamespaces()
-    let namespaceToUpdate = namespaces.find(t => t.id === id);
-    let index = namespaces.findIndex(t => t.id === id);
-    namespaceToUpdate = {...namespaceToUpdate, ...newState, id};
-
-    namespaces[index] = namespaceToUpdate
-
-    console.log('namespaces after update ', namespaces);
-    this.updateNamespaces(namespaces);
+    let namespaces = this.namespaces();
+    const nextNamespaces = produce(namespaces, draft => {
+      let namespaceToUpdate = draft[id];
+      namespaceToUpdate = {...namespaceToUpdate, ...newState};
+      draft[id] = namespaceToUpdate;
+    });
+    this.namespaces.set(nextNamespaces);
   }
     
   addNamespace(namespace: Namespace) {
     const namespaces = this.getNamespaces();
-    namespaces.push(namespace);
-    this.updateNamespaces(namespaces);
+    const nextNamespaces = produce(namespaces, draft => {
+      draft[namespace.id] = namespace;
+    });
+    this.namespaces.set(nextNamespaces);
   }
 
+
+  deleteTask(namespace: Namespace) {
+    const namespaces = this.namespaces();
+    const nextNamespaces = produce(namespaces, draft => {
+      delete draft[namespace.id];
+    })
+    this.namespaces.set(nextNamespaces);
+  }
+
+
   isNamespacesExist() {
-    return this.getNamespaces().length > 0;
+    return Object.values(this.getNamespaces()).length > 0;
   }
 
   private getNamespaces() {
-    return this.localStorageService.get<Namespace[]>(NAMESPACE_KEY) || [];
+    return this.localStorageService.get<Record<Namespace['id'], Namespace>>(NAMESPACE_KEY) || {};
   }
 }

@@ -69,8 +69,8 @@ export class NamespaceComponent {
   }
 
   createTaskFromRandom() {
-    const possibleRandomTasks = this.randomTaskService
-      .randomTasks()
+    const possibleRandomTasks = Object.values(this.randomTaskService
+      .randomTasks())
       .filter((t) => t.namespaceId === this.namespace.id);
     const randomTask =
       this.randomTaskService.getRandomTask(possibleRandomTasks);
@@ -88,15 +88,12 @@ export class NamespaceComponent {
   }
 
   addLink(task: Task) {
-    console.log('add link!!!');
     const dialogRef = this.dialog.open(AddLinkDialogComponent);
 
     dialogRef
       .afterClosed()
       .subscribe((link: { caption: string; url: string }) => {
         if (link) {
-          console.log('created link', link);
-          // this.taskService.addTask(task);
           this.taskService.updateTask(task.id, {
             attachedLinks: [...(task.attachedLinks || []), link],
           });
@@ -110,12 +107,10 @@ export class NamespaceComponent {
   }
 
   deleteTask(task: Task) {
-    console.log('%c ---> DELETE ', 'color: #de4209', task);
     this.taskService.deleteTask(task);
   }
 
   freezeTask(task: Task) {
-    console.log('%c ---> FREEZE ', 'color: #de4209', task);
     const dialogRef = this.dialog.open(FreezeTaskDialogComponent);
     dialogRef.afterClosed().subscribe((reason) => {
       this.taskService.updateTask(task.id, {
@@ -126,7 +121,6 @@ export class NamespaceComponent {
   }
 
   unfreezeTask(task: Task) {
-    console.log('%c ---> UNFREEZE ', 'color: #de4209', task);
     this.taskService.updateTask(task.id, {
       isFrozen: false,
       frozenReason: null,

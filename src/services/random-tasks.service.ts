@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, effect, signal } from '@angular/core';
 import {LocalStorageService} from './local-storage.service';
 import {RandomTask} from '../models/trandom-task';
+import {produce} from 'immer';
 
 export const RANDOM_TASK_KEY = 'unf_radom_tasks_list'
 
@@ -8,46 +9,49 @@ export const RANDOM_TASK_KEY = 'unf_radom_tasks_list'
   providedIn: 'root'
 })
 export class RandomTasksService {
-  randomTasks = signal([]);
+  randomTasks = signal<Record<RandomTask['id'], RandomTask>>({});
 
   constructor(private readonly localStorageService: LocalStorageService) {
-    this.setRandomTasks();
+    this.initRandomTasks();
+
+    effect(() => {
+      const randomTasks = this.randomTasks();
+      this.localStorageService.set(RANDOM_TASK_KEY, randomTasks);
+    })
   }
 
-  setRandomTasks() {
+  initRandomTasks() {
     this.randomTasks.set(this.getRandomTasks());
   }
-
-  updateRandomTasks(tasks: RandomTask[]) {
-    this.localStorageService.set(RANDOM_TASK_KEY, tasks);
-    this.randomTasks.set(tasks);
-  }
   
-  addRandomTask(task: RandomTask) {
-    const randomTasks = this.getRandomTasks();
-    randomTasks.push(task);
-    this.updateRandomTasks(randomTasks);
+  addRandomTask(randomTask: RandomTask) {
+    const randomTasks = this.randomTasks();
+    const nextRandomTasks = produce(randomTasks, draft => {
+      draft[randomTask.id] = randomTask;
+    });
+    this.randomTasks.set(nextRandomTasks);
   }
 
   updateRandomTask(id: string, newState: Partial<RandomTask>) {
-    let randomTasks = this.getRandomTasks()
-    let taskToUpdate = randomTasks.find(t => t.id === id);
-    let index = randomTasks.findIndex(t => t.id === id);
-    taskToUpdate = {...taskToUpdate, ...newState, id};
-
-    randomTasks[index] = taskToUpdate
-
-    console.log('random tasks after update ', randomTasks);
-    this.updateRandomTasks(randomTasks);
+    let randomTasks = this.randomTasks();
+    const nextRandomTasks = produce(randomTasks, draft => {
+      let randomTaskToUpdate = draft[id];
+      randomTaskToUpdate = {...randomTaskToUpdate, ...newState};
+      draft[id] = randomTaskToUpdate;
+    });
+    this.randomTasks.set(nextRandomTasks);
   }
 
-  deleteTask(task: RandomTask) {
-    const randomTasks = this.getRandomTasks().filter(t => t.id !== task.id);
-    this.updateRandomTasks(randomTasks);
+  deleteRandomTask(randomTask: RandomTask) {
+    const randomTasks = this.randomTasks();
+    const nextRandomTasks = produce(randomTasks, draft => {
+      delete draft[randomTask.id];
+    })
+    this.randomTasks.set(nextRandomTasks);
   }
 
   areRandomTasksExists() {
-    return this.getRandomTasks().length > 0;
+    return Object.values(this.getRandomTasks()).length > 0;
   }
 
   getRandomTask(tasks: RandomTask[]): RandomTask {
@@ -70,6 +74,6 @@ export class RandomTasksService {
   }
 
   private getRandomTasks() {
-    return this.localStorageService.get<RandomTask[]>(RANDOM_TASK_KEY) || [];
+    return this.localStorageService.get<Record<RandomTask['id'], RandomTask>>(RANDOM_TASK_KEY) || {};
   }
 }
