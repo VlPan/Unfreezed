@@ -70,6 +70,13 @@ export class AppComponent implements OnInit {
     }
   }
 
+  showAll() {
+    const ns = this.namespaces();
+    for (const n of ns) {
+      this.namespaceService.updateNamespace(n.id, {isShown: true});
+    }
+  }
+
   onMousedown($event) {
     this.isDown = true;
     this.isDragging = true;

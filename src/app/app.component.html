@@ -6,6 +6,12 @@
             {{namespace.name}}
           </mat-chip>
         }
+        <mat-chip (click)="hideAll()">
+          Hide all
+        </mat-chip>
+        <mat-chip (click)="showAll()">
+          Show all
+        </mat-chip>
       </mat-chip-set>
   </section>
   <section class="app-namespaces"
