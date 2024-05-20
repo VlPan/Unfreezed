@@ -7,17 +7,14 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogRef,
-  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import {CreateTaskDialogData} from '../../../models/ui/create-task-dialog-data';
-import {Task} from '../../../models/task';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
 @Component({
-  selector: 'app-create-task-dialog',
+  selector: 'app-add-link-dialog',
   standalone: true,
   imports: [
     CommonModule,
@@ -26,24 +23,25 @@ import {MatInputModule} from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule
   ],
-  templateUrl: `./create-task-dialog.component.html`,
-  styleUrl: './create-task-dialog.component.scss',
+  templateUrl: `./add-link-dialog.component.html`,
+  styleUrl: './add-link-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateTaskDialogComponent implements OnInit  {
-  private task: Task;
-  titleForm: FormGroup;
-  title: FormGroup;
+export class AddLinkDialogComponent implements OnInit  {
+  addLinkForm: FormGroup;
 
   constructor(
-    public dialogRef: MatDialogRef<CreateTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CreateTaskDialogData,
+    public dialogRef: MatDialogRef<AddLinkDialogComponent>,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
-    this.titleForm = this.formBuilder.group({
-      title: ['', Validators.required]
+    const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+    const regex = new RegExp(expression);
+
+    this.addLinkForm = this.formBuilder.group({
+      caption: ['', [Validators.required]],
+      url: ['', [Validators.required, Validators.pattern(regex)]]
     });
   }
 
@@ -52,18 +50,9 @@ export class CreateTaskDialogComponent implements OnInit  {
   }
 
   submit(): void {
-    if(this.titleForm.valid) {
-      this.task = {
-        id: uuidv4(),
-        namespaceId: this.data.namespace.id,
-        title: this.titleForm.get('title').value,
-        isCompleted: false,
-        isFrozen: false,
-        frozenReason: null,
-        attachedLinks: [],
-      }
-
-      this.dialogRef.close(this.task);
-    }
+    this.dialogRef.close({
+      caption: this.addLinkForm.get('caption').value,
+      url: this.addLinkForm.get('url').value,
+    });
   }
 }

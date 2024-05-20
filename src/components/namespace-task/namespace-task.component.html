@@ -1,15 +1,25 @@
 <div [matTooltip]="task.frozenReason" class="namespace-task" [ngClass]="{'task--completed': task.isCompleted, 'task--frozen': task.isFrozen}">
   <mat-checkbox [checked]="task.isCompleted" [disabled]="task.isFrozen" (change)="toggleTask($event)"></mat-checkbox>
-  <div class="title">{{task.title}}</div>
-  <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-    <mat-icon>more_vert</mat-icon>
-  </button>
+  <div class="title">
+    <span>{{task.title}}</span>
+  </div>
+
+  <div class="menu">
+    @if(task.attachedLinks?.length > 0) {
+      <button mat-icon-button [matMenuTriggerFor]="links" aria-label="links-menu">
+        <mat-icon>link</mat-icon>
+      </button>
+    }
+    <button  mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
 </div>
 
 <mat-menu #menu="matMenu">
   <!-- <button mat-menu-item class="edit">Edit</button> TODO: add later-->
   <button mat-menu-item (click)="onDelete()">
-    <mat-icon class="delete" aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+    <mat-icon class="delete" aria-hidden="false" aria-label="delete" fontIcon="delete"></mat-icon>
     <span class="delete">Delete</span>
   </button>
   @if(task.isFrozen) {
@@ -23,5 +33,17 @@
       <span class="freeze">Freeze</span>
     </button>
   }
+  <button mat-menu-item (click)="onAddLink()">
+    <mat-icon  aria-hidden="false" aria-label="link" fontIcon="link"></mat-icon>
+    <span>Add Link</span>
+  </button>
+</mat-menu>
 
+<mat-menu #links="matMenu">
+
+  @for (link of task.attachedLinks; track $index) { 
+    <button mat-menu-item (click)="navigate(link)">
+      {{link.caption}}
+    </button>
+  }
 </mat-menu>

@@ -1,4 +1,4 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule, Location, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import {Task} from '../../models/task';
 import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
@@ -24,11 +24,14 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NamespaceTaskComponent {
+  constructor() {}
+
   @Input() task: Task;
   @Output() taskToggled = new EventEmitter<boolean>();
   @Output() deleted = new EventEmitter<Task>();
   @Output() freezed = new EventEmitter<Task>();
   @Output() unfreeze = new EventEmitter<Task>();
+  @Output() linkAdded = new EventEmitter<Task>();
 
   toggleTask(value: MatCheckboxChange) {
     this.taskToggled.emit(value.checked)
@@ -44,5 +47,13 @@ export class NamespaceTaskComponent {
 
   onUnfreeze() {
     this.unfreeze.emit(this.task)
+  }
+
+  onAddLink() {
+    this.linkAdded.emit(this.task)
+  }
+
+  navigate(link) {
+    window.open(link.url, '_blank');
   }
 }

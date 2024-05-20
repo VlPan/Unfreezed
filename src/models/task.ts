@@ -5,4 +5,10 @@ export interface Task {
   isCompleted: boolean;
   isFrozen: boolean;
   frozenReason: string;
+  attachedLinks?: Link[];
+}
+
+export interface Link {
+  caption: string;
+  url: string;
 }

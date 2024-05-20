@@ -15,6 +15,7 @@ import {FreezeTaskDialogComponent} from '../dialogs/freeze-task-dialog/freeze-ta
 import {MatIconModule} from '@angular/material/icon';
 import {RandomTasksService} from '../../services/random-tasks.service';
 import { v4 as uuidv4 } from 'uuid';
+import {AddLinkDialogComponent} from '../dialogs/add-link-dialog/add-link-dialog.component';
 
 @Component({
   selector: 'app-namespace',
@@ -67,8 +68,22 @@ export class NamespaceComponent {
       isCompleted: false,
       isFrozen: false,
       frozenReason: null,
+      attachedLinks: []
     }
     this.taskService.addTask(task);
+  }
+
+  addLink(task: Task) {
+    console.log('add link!!!', );
+    const dialogRef = this.dialog.open(AddLinkDialogComponent);
+
+    dialogRef.afterClosed().subscribe((link: {caption: string, url: string}) => {
+      if(link) {
+        console.log('created link', link);
+        // this.taskService.addTask(task);
+        this.taskService.updateTask(task.id, {attachedLinks: [...(task.attachedLinks || []), link]})
+      }
+    });
   }
 
   updateTaskCompletion(task: Task, isCompleted: boolean) {

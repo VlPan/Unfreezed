@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Add Link</h2>
+<mat-dialog-content>
+  <form [formGroup]="addLinkForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Caption</mat-label>
+      <input formControlName="caption" cdkFocusInitial matInput required>
+      <mat-error *ngIf="(addLinkForm.get('caption')?.errors || {})['required']">Caption is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Url</mat-label>
+      <input formControlName="url" cdkFocusInitial matInput required>
+      <mat-error *ngIf="(addLinkForm.get('url')?.errors || {})['required']">Url is required</mat-error>
+      <mat-error *ngIf="(addLinkForm.get('url')?.errors || {})['pattern']">Invalid url</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'center'">
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="addLinkForm.invalid">Add Link</button>
+</mat-dialog-actions>
