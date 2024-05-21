@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RandomTasksService } from '../../services/random-tasks.service';
 import { v4 as uuidv4 } from 'uuid';
 import { AddLinkDialogComponent } from '../dialogs/add-link-dialog/add-link-dialog.component';
-import {UIStateService} from '../../services/ui-state.service';
+import { UIStateService } from '../../services/ui-state.service';
 
 @Component({
   selector: 'app-namespace',
@@ -45,7 +45,7 @@ export class NamespaceComponent {
     public dialog: MatDialog,
     private readonly taskService: TasksService,
     private randomTaskService: RandomTasksService,
-    public uiStateService: UIStateService,
+    public uiStateService: UIStateService
   ) {}
 
   ngOnChanges() {
@@ -69,9 +69,9 @@ export class NamespaceComponent {
   }
 
   createTaskFromRandom() {
-    const possibleRandomTasks = Object.values(this.randomTaskService
-      .randomTasks())
-      .filter((t) => t.namespaceId === this.namespace.id);
+    const possibleRandomTasks = Object.values(
+      this.randomTaskService.randomTasks()
+    ).filter((t) => t.namespaceId === this.namespace.id);
     const randomTask =
       this.randomTaskService.getRandomTask(possibleRandomTasks);
 
@@ -132,6 +132,6 @@ export class NamespaceComponent {
   }
 
   nextTimer() {
-    this.uiStateService.addTime(this.namespace.id)
+    this.uiStateService.addTime(this.namespace.id);
   }
 }
