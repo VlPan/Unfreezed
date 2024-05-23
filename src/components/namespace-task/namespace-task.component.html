@@ -23,14 +23,27 @@
       <mat-icon>link</mat-icon>
     </button>
     }
+    @if(!task.isCompleted) {
     <button
       mat-icon-button
       [disabled]="task.isCompleted"
       [matMenuTriggerFor]="menu"
-      aria-label="Example icon-button with a menu"
+      aria-label="open menu"
     >
       <mat-icon>more_vert</mat-icon>
     </button>
+    } @else {
+      <button
+      class="delete"
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Delete task"
+      (click)="onDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+    }
+
   </div>
 </div>
 
