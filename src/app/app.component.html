@@ -6,11 +6,15 @@
             {{namespace.name}}
           </mat-chip>
         }
+        <div class="divider"></div>
         <mat-chip (click)="hideAll()">
           Hide all
         </mat-chip>
         <mat-chip (click)="showAll()">
           Show all
+        </mat-chip>
+        <mat-chip (click)="removeAllCompleted()">
+          Remove all completed
         </mat-chip>
       </mat-chip-set>
       <div class="points">

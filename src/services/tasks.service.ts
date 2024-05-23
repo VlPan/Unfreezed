@@ -50,6 +50,18 @@ export class TasksService {
     this.tasks.set(nextTasks);
   }
 
+  deleteAllCompletedTasks() {
+    const tasks = this.tasks();
+    const nextTasks = produce(tasks, draft => {
+      Object.values(draft).forEach((task) => {
+        if(task.isCompleted) {
+          delete draft[task.id];
+        }
+      })
+    });
+    this.tasks.set(nextTasks);
+  }
+
   getTasks() {
     return this.localStorageService.get<Record<Task['id'], Task>>(TASK_KEY) || {};
   }

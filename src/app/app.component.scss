@@ -4,7 +4,7 @@ body {
 }
 
 mat-chip {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .app-root {
@@ -65,3 +65,8 @@ mat-chip {
   font-weight: 600;
 }
 
+.divider {
+  height: 100%;
+  margin-left: 20px;
+  margin-right: 20px;
+}

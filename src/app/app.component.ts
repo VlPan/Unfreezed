@@ -19,6 +19,7 @@ import {NgClass} from '@angular/common';
 import {UIStateService} from '../services/ui-state.service';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
+import {TasksService} from '../services/tasks.service';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
     private readonly representationService: RepresentationService,
     private readonly namespaceService: NamespacesService,
     public readonly uiStateService: UIStateService,
+    public readonly tasksService: TasksService,
   ) {}
 
   private isDown = false;
@@ -120,5 +122,9 @@ export class AppComponent implements OnInit {
 
     this.uiStateService.addScores(time);
     this.uiStateService.resetTimers();
+  }
+
+  removeAllCompleted() {
+    this.tasksService.deleteAllCompletedTasks();
   }
 }
