@@ -33,6 +33,10 @@
   color: white;
 }
 
+.task--important {
+  border: 3px solid #fca61c;
+}
+
 .task--follow-up {
   background-color: #8a810b;
   color: white;
@@ -61,5 +65,15 @@
 
 .unfreeze {
   color: orange !important;
+  font-weight: 600;
+}
+
+.green {
+  color: #3ac25e !important;
+  font-weight: 600;
+}
+
+.orange {
+  color: #fca61c !important;
   font-weight: 600;
 }

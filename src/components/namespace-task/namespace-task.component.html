@@ -5,6 +5,7 @@
   'task--completed': task.isCompleted, 
   'task--frozen': task.isFrozen === FrozenStatus.Frozen,
   'task--follow-up': task.isFrozen === FrozenStatus.FollowUp,
+  'task--important': task.isImportant,
   }"
 >
   <div class="title-checkbox">
@@ -73,6 +74,18 @@
     <span class="follow-up">Follow Up</span>
   </button>
   }
+  @if(!task.isImportant) {
+    <button mat-menu-item (click)="toggleImportant.emit(true)">
+      <mat-icon class="orange" fontIcon="priority_high"></mat-icon>
+      <span class="orange">Mark as Important</span>
+    </button>
+  } @else {
+    <button mat-menu-item (click)="toggleImportant.emit(false)">
+      <mat-icon class="green" fontIcon="low_priority"></mat-icon>
+      <span class="green">Mark as common</span>
+    </button>
+  }
+
   <button mat-menu-item (click)="onAddLink()">
     <mat-icon aria-hidden="false" aria-label="link" fontIcon="link"></mat-icon>
     <span>Add Link</span>

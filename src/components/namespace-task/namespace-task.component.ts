@@ -34,6 +34,7 @@ export class NamespaceTaskComponent {
   @Output() freezed = new EventEmitter<FrozenStatus>();
   @Output() unfreeze = new EventEmitter<Task>();
   @Output() linkAdded = new EventEmitter<Task>();
+  @Output() toggleImportant = new EventEmitter<boolean>();
 
   toggleTask(value: MatCheckboxChange) {
     this.taskToggled.emit(value.checked)

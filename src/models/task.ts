@@ -3,6 +3,7 @@ export interface Task {
   namespaceId: string;
   title: string;
   isCompleted: boolean;
+  isImportant?: boolean;
   isFrozen: FrozenStatus | null;
   frozenReason: string;
   attachedLinks?: Link[];

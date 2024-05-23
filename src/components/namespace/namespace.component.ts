@@ -133,4 +133,10 @@ export class NamespaceComponent {
   nextTimer() {
     this.uiStateService.addTime(this.namespace.id);
   }
+
+  updateImportance(task: Task, isImportant) {
+    this.taskService.updateTask(task.id, {
+      isImportant,
+    });
+  }
 }
