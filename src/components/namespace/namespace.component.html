@@ -16,7 +16,7 @@
     <app-namespace-task [task]="task"
                         (taskToggled)="updateTaskCompletion(task, $event)"
                         (deleted)="deleteTask(task)"
-                        (freezed)="freezeTask(task)"
+                        (freezed)="freezeTask($event, task)"
                         (unfreeze)="unfreezeTask(task)"
                         (linkAdded)="addLink(task)"
                         >

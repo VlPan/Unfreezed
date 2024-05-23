@@ -5,6 +5,8 @@ import { LocalStorageService } from './local-storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { RandomTasksService } from './random-tasks.service';
 import { RandomTask } from '../models/trandom-task';
+import {TASK_KEY, TasksService} from './tasks.service';
+import {FrozenStatus} from '../models/task';
 
 @Injectable({
   providedIn: 'root',
@@ -285,7 +287,9 @@ export class StartupService {
 
   constructor(
     private readonly namespacesService: NamespacesService,
-    private readonly randomTasksService: RandomTasksService
+    private readonly randomTasksService: RandomTasksService,
+    private readonly tasksService: TasksService,
+    private readonly localStorageService: LocalStorageService,
   ) {}
 
   startup() {

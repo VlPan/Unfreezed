@@ -3,7 +3,7 @@ export interface Task {
   namespaceId: string;
   title: string;
   isCompleted: boolean;
-  isFrozen: boolean;
+  isFrozen: FrozenStatus | null;
   frozenReason: string;
   attachedLinks?: Link[];
 }
@@ -11,4 +11,9 @@ export interface Task {
 export interface Link {
   caption: string;
   url: string;
+}
+
+export enum FrozenStatus {
+  Frozen = 'Frozen',
+  FollowUp = 'Follow Up',
 }

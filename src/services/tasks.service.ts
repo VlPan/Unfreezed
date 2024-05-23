@@ -50,7 +50,7 @@ export class TasksService {
     this.tasks.set(nextTasks);
   }
 
-  private getTasks() {
+  getTasks() {
     return this.localStorageService.get<Record<Task['id'], Task>>(TASK_KEY) || {};
   }
 }

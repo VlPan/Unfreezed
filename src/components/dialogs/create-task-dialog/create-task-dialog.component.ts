@@ -58,7 +58,7 @@ export class CreateTaskDialogComponent implements OnInit  {
         namespaceId: this.data.namespace.id,
         title: this.titleForm.get('title').value,
         isCompleted: false,
-        isFrozen: false,
+        isFrozen: null,
         frozenReason: null,
         attachedLinks: [],
       }

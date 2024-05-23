@@ -14,7 +14,7 @@ import { CreateTaskDialogComponent } from '../dialogs/create-task-dialog/create-
 import { TasksService } from '../../services/tasks.service';
 import { NamespaceTaskComponent } from '../namespace-task/namespace-task.component';
 import { NamespaceUI } from '../../models/ui/namespaces-ui';
-import { Task } from '../../models/task';
+import { FrozenStatus, Task } from '../../models/task';
 import { FreezeTaskDialogComponent } from '../dialogs/freeze-task-dialog/freeze-task-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RandomTasksService } from '../../services/random-tasks.service';
@@ -80,7 +80,7 @@ export class NamespaceComponent {
       namespaceId: this.namespace.id,
       title: randomTask.title,
       isCompleted: false,
-      isFrozen: false,
+      isFrozen: null,
       frozenReason: null,
       attachedLinks: [],
     };
@@ -102,19 +102,18 @@ export class NamespaceComponent {
   }
 
   updateTaskCompletion(task: Task, isCompleted: boolean) {
-    this.taskService.updateTask(task.id, { isCompleted });
-    console.log('updateTaskCompletion', task, isCompleted);
+    this.taskService.updateTask(task.id, { isCompleted, isFrozen: null });
   }
 
   deleteTask(task: Task) {
     this.taskService.deleteTask(task);
   }
 
-  freezeTask(task: Task) {
+  freezeTask(status: FrozenStatus, task: Task) {
     const dialogRef = this.dialog.open(FreezeTaskDialogComponent);
     dialogRef.afterClosed().subscribe((reason) => {
       this.taskService.updateTask(task.id, {
-        isFrozen: true,
+        isFrozen: status,
         frozenReason: reason || null,
       });
     });
@@ -122,7 +121,7 @@ export class NamespaceComponent {
 
   unfreezeTask(task: Task) {
     this.taskService.updateTask(task.id, {
-      isFrozen: false,
+      isFrozen: null,
       frozenReason: null,
     });
   }

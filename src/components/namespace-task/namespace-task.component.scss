@@ -33,6 +33,11 @@
   color: white;
 }
 
+.task--follow-up {
+  background-color: #8a810b;
+  color: white;
+}
+
 .delete {
   color: #f44336 !important;
   font-weight: 600;
@@ -46,6 +51,11 @@
 
 .freeze {
   color: #87CEFA !important;
+  font-weight: 600;
+}
+
+.follow-up {
+  color: #d4ca48 !important;
   font-weight: 600;
 }
 
