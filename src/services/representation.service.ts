@@ -26,12 +26,13 @@ export class RepresentationService {
         const followUp = relatedTasks.filter(t => t.isFrozen === FrozenStatus.FollowUp && !t.isCompleted);
         const frozen = relatedTasks.filter(t => t.isFrozen === FrozenStatus.Frozen && !t.isCompleted);
         const completed = relatedTasks.filter(t => t.isCompleted);
-        const sortedTasks = [...normal, ...followUp, ...frozen, ...completed];
+        const sortedTasks = [...normal, ...followUp, ...frozen, ...completed]
+        .sort((t1, t2 ) => sortByBooleanReversed(Boolean(t2.isImportant), Boolean(t1.isImportant)));
 
         // .sort((t1, t2 ) => sortByBooleanReversed(Boolean(t1.isFrozen), Boolean(t2.isFrozen)))
         // .sort((t1, t2 ) => sortByBooleanReversed(t1.isCompleted, t2.isCompleted))
 
-        const allFrozen = relatedTasks.length > 0 ? relatedTasks.every(t => t.isFrozen) : false;
+        const allFrozen = relatedTasks.length > 0 ? relatedTasks.every(t => t.isFrozen || t.isCompleted) : false;
 
         return {...namespace, tasks: sortedTasks, isFrozen: allFrozen}
       })
