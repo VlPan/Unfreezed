@@ -108,7 +108,7 @@ export class NamespaceComponent {
   }
 
   updateTaskCompletion(task: Task, isCompleted: boolean) {
-    this.taskService.updateTask(task.id, { isCompleted, isFrozen: null });
+    this.taskService.updateTask(task.id, { isCompleted, isFrozen: null, isImportant: false });
   }
 
   deleteTask(task: Task) {
