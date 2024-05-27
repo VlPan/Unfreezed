@@ -43,6 +43,9 @@
 
 
 <mat-menu #namespaceMenu="matMenu">
+  <button mat-menu-item (click)="configureRandomTasks()">
+    Configure Random Tasks
+  </button>
   <button mat-menu-item (click)="deleteNamespace()">
     Delete
   </button>

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Configure Random Tasks</h2>
+<mat-dialog-content>
+  <form [formGroup]="tasksForm">
+    @for (taskForm of tasks.controls; track taskForm.get('id').value; let index = $index) {
+    <div class="row" [formGroup]="$any(taskForm)">
+      <mat-form-field appearance="fill" class="title">
+        <input matInput formControlName="title" placeholder="Task title" />
+      </mat-form-field>
+      <mat-form-field class="weight" appearance="fill">
+        <input
+          matInput
+          type="number"
+          formControlName="weight"
+          placeholder="Task weight"
+        />
+      </mat-form-field>
+
+      <button mat-icon-button (click)="deleteTask(index)">
+        <mat-icon class="delete-btn"> delete_forever</mat-icon>
+      </button>
+    </div>
+    }
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'center'">
+  <button mat-raised-button color="primary" (click)="updateRandomTasks()">
+    Update
+  </button>
+  <button mat-raised-button color="secondary" (click)="addTask()">
+    Add Task
+  </button>
+</mat-dialog-actions>

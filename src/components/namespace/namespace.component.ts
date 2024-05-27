@@ -23,6 +23,8 @@ import { AddLinkDialogComponent } from '../dialogs/add-link-dialog/add-link-dial
 import { UIStateService } from '../../services/ui-state.service';
 import {MatMenuModule} from '@angular/material/menu';
 import {NamespacesService} from '../../services/namespaces.service';
+import {ConfigureRandomTasksDialogComponent} from '../dialogs/configure-random-tasks-dialog/configure-random-tasks-dialog.component';
+import {RandomTask} from '../../models/trandom-task';
 
 @Component({
   selector: 'app-namespace',
@@ -146,5 +148,16 @@ export class NamespaceComponent {
 
   deleteNamespace() {
     this.namespaceService.deleteNamespace(this.namespace);
+    this.taskService.deleteTasksByNamespaceId(this.namespace.id);
+    this.randomTaskService.deleteTasksByNamespaceId(this.namespace.id);
+  }
+
+  configureRandomTasks() {
+    const randomTasks = this.randomTaskService.getRandomTasksByNamespaceId(this.namespace.id);
+    const dialogRef = this.dialog.open(ConfigureRandomTasksDialogComponent, { data: {randomTasks }});
+    dialogRef.afterClosed().subscribe((tasks) => {
+      const updatedTasksInNamespace: RandomTask[] = tasks.map(t => ({...t, namespaceId: t.namespaceId}))
+      this.randomTaskService.replaceTasksInNamespace(this.namespace.id, updatedTasksInNamespace)
+    });
   }
 }

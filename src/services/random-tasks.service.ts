@@ -50,9 +50,42 @@ export class RandomTasksService {
     this.randomTasks.set(nextRandomTasks);
   }
 
+  deleteTasksByNamespaceId(id: string) {
+    const tasks = this.randomTasks();
+    const nextTasks = produce(tasks, draft => {
+      for (const task of Object.values(draft)) {
+        if(task.namespaceId === id) {
+          delete draft[task.id];
+        }
+      }
+    })
+    this.randomTasks.set(nextTasks);
+  }
+
   areRandomTasksExists() {
     return Object.values(this.getRandomTasks()).length > 0;
   }
+
+
+  getRandomTasksByNamespaceId(id) {
+    return Object.values(this.randomTasks()).filter(t => t.namespaceId === id);
+  }
+
+  replaceTasksInNamespace(namespaceId: string, updatedTasks: RandomTask[]) {
+    const randomTasks = this.randomTasks();
+    const nextRandomTasks = produce(randomTasks, draft => {
+      const namespaceRelated = Object.values(draft).filter(t => t.namespaceId === namespaceId);
+      for (const task of namespaceRelated) {
+        delete draft[task.id];
+      }
+
+      for (const newTask of updatedTasks) {
+        draft[newTask.id] = newTask;
+      }
+    })
+    this.randomTasks.set(nextRandomTasks);
+  }
+
 
   getRandomTask(tasks: RandomTask[]): RandomTask {
     const withPriority = this.prioritizeTasks(tasks);

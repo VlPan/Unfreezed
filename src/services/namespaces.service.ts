@@ -51,7 +51,6 @@ export class NamespacesService {
     this.namespaces.set(nextNamespaces);
   }
 
-
   isNamespacesExist() {
     return Object.values(this.getNamespaces()).length > 0;
   }

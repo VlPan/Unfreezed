@@ -50,6 +50,18 @@ export class TasksService {
     this.tasks.set(nextTasks);
   }
 
+  deleteTasksByNamespaceId(id: string) {
+    const tasks = this.tasks();
+    const nextTasks = produce(tasks, draft => {
+      for (const task of Object.values(draft)) {
+        if(task.namespaceId === id) {
+          delete draft[task.id];
+        }
+      }
+    })
+    this.tasks.set(nextTasks);
+  }
+
   deleteAllCompletedTasks() {
     const tasks = this.tasks();
     const nextTasks = produce(tasks, draft => {
