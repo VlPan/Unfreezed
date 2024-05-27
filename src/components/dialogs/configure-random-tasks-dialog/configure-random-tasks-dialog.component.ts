@@ -31,7 +31,7 @@ export class ConfigureRandomTasksDialogComponent implements OnInit {
   private randomTasks: RandomTask[] = [];
   tasksForm: FormGroup = this.fb.group({
     tasks: this.fb.array([])
-  });;
+  });
   
   constructor(
     public dialogRef: MatDialogRef<ConfigureRandomTasksDialogComponent>,

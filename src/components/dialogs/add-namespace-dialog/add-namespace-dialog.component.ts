@@ -53,7 +53,7 @@ export class AddNamespaceDialogComponent implements OnInit  {
 
   submit(): void {
     this.dialogRef.close({
-      uuid: uuidv4(),
+      id: uuidv4(),
       isShown: true,
       name: this.addNamespaceForm.get('name').value,
       priority: this.addNamespaceForm.get('priority').value,

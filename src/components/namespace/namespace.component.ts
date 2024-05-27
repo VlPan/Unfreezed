@@ -156,7 +156,7 @@ export class NamespaceComponent {
     const randomTasks = this.randomTaskService.getRandomTasksByNamespaceId(this.namespace.id);
     const dialogRef = this.dialog.open(ConfigureRandomTasksDialogComponent, { data: {randomTasks }});
     dialogRef.afterClosed().subscribe((tasks) => {
-      const updatedTasksInNamespace: RandomTask[] = tasks.map(t => ({...t, namespaceId: t.namespaceId}))
+      const updatedTasksInNamespace: RandomTask[] = tasks.map(t => ({...t, namespaceId: this.namespace.id}));
       this.randomTaskService.replaceTasksInNamespace(this.namespace.id, updatedTasksInNamespace)
     });
   }
