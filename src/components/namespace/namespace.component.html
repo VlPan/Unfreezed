@@ -1,27 +1,49 @@
-<mat-card [ngStyle]="{'background-color': isFocused ? namespace.color : 'white'}">
+<mat-card
+  [ngStyle]="{ 'background-color': isFocused ? namespace.color : 'white' }"
+>
   <mat-card-header>
-    <mat-icon class="focus-icon"
-              [ngStyle]="{'color': namespace.focusColor}"
-              (click)="focusOnNamespace()">adjust</mat-icon>
-    <mat-card-title>{{namespace.name}}</mat-card-title>
+    <button
+      class="namespace-menu"
+      mat-icon-button
+      [matMenuTriggerFor]="namespaceMenu"
+      aria-label="open menu"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-icon
+      class="focus-icon"
+      [ngStyle]="{ color: namespace.focusColor }"
+      (click)="focusOnNamespace()"
+      >adjust</mat-icon
+    >
+    <mat-card-title>{{ namespace.name }}</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <button mat-button
-            (click)="openCreateTaskDialog()">Create Task</button>
+    <button mat-button (click)="openCreateTaskDialog()">Create Task</button>
     <button mat-button (click)="createTaskFromRandom()">Pick Random</button>
-    <button mat-button (click)="nextTimer()">Timer ({{uiStateService.namespaceTimerMap()[namespace.id]?.next || 10}})</button>
+    <button mat-button (click)="nextTimer()">
+      Timer ({{ uiStateService.namespaceTimerMap()[namespace.id]?.next || 10 }})
+    </button>
   </mat-card-actions>
   <mat-card-content>
     @for (task of namespace.tasks; track task.id) {
-    <app-namespace-task [task]="task"
-                        (taskToggled)="updateTaskCompletion(task, $event)"
-                        (toggleImportant)="updateImportance(task, $event)"
-                        (deleted)="deleteTask(task)"
-                        (freezed)="freezeTask($event, task)"
-                        (unfreeze)="unfreezeTask(task)"
-                        (linkAdded)="addLink(task)"
-                        >
+    <app-namespace-task
+      [task]="task"
+      (taskToggled)="updateTaskCompletion(task, $event)"
+      (toggleImportant)="updateImportance(task, $event)"
+      (deleted)="deleteTask(task)"
+      (freezed)="freezeTask($event, task)"
+      (unfreeze)="unfreezeTask(task)"
+      (linkAdded)="addLink(task)"
+    >
     </app-namespace-task>
     }
   </mat-card-content>
 </mat-card>
+
+
+<mat-menu #namespaceMenu="matMenu">
+  <button mat-menu-item (click)="deleteNamespace()">
+    Delete
+  </button>
+</mat-menu>

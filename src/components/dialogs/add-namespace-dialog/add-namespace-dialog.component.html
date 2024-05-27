@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Add Namespace</h2>
+<mat-dialog-content>
+  <form [formGroup]="addNamespaceForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input formControlName="name" cdkFocusInitial matInput required>
+      <mat-error *ngIf="(addNamespaceForm.get('name')?.errors || {})['required']">Name is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Priority</mat-label>
+      <input formControlName="priority" type="number"  matInput required>
+      <mat-error *ngIf="(addNamespaceForm.get('color')?.errors || {})['required']">Color is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Color</mat-label>
+      <input formControlName="color"  matInput required>
+      <mat-error *ngIf="(addNamespaceForm.get('color')?.errors || {})['required']">Color is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Focus Color</mat-label>
+      <input formControlName="focusColor"  matInput required>
+      <mat-error *ngIf="(addNamespaceForm.get('focusColor')?.errors || {})['required']">Focus Color is required</mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="fill">
+      <mat-label>Priority</mat-label>
+      <mat-slider formControlName="priority" min="1" max="10" step="1" thumbLabel></mat-slider>
+    </mat-form-field> -->
+    <!-- <mat-form-field appearance="fill">
+      <mat-label>Url</mat-label>
+      <input formControlName="url" cdkFocusInitial matInput required>
+      <mat-error *ngIf="(addLinkForm.get('url')?.errors || {})['required']">Url is required</mat-error>
+      <mat-error *ngIf="(addLinkForm.get('url')?.errors || {})['pattern']">Invalid url</mat-error>
+    </mat-form-field> -->
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'center'">
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="addNamespaceForm.invalid">Add Namespace</button>
+</mat-dialog-actions>
+
+      <!-- <mat-error *ngIf="(addLinkForm.get('caption')?.errors || {})['required']">Caption is required</mat-error> -->

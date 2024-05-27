@@ -20,6 +20,9 @@ import {UIStateService} from '../services/ui-state.service';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import {TasksService} from '../services/tasks.service';
+import {MatDialog} from '@angular/material/dialog';
+import {AddNamespaceDialogComponent} from '../components/dialogs/add-namespace-dialog/add-namespace-dialog.component';
+import {Namespace} from '../models/namespace';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +41,8 @@ export class AppComponent implements OnInit {
     private readonly namespaceService: NamespacesService,
     public readonly uiStateService: UIStateService,
     public readonly tasksService: TasksService,
+    public dialog: MatDialog,
+
   ) {}
 
   private isDown = false;
@@ -127,4 +132,16 @@ export class AppComponent implements OnInit {
   removeAllCompleted() {
     this.tasksService.deleteAllCompletedTasks();
   }
+
+  addNamespace() {
+    const dialogRef = this.dialog.open(AddNamespaceDialogComponent);
+
+
+    dialogRef.afterClosed().subscribe((namespace: Namespace) => {
+      this.namespaceService.addNamespace(namespace);
+      console.log('namespace', namespace);
+    });
+  }
 }
+
+

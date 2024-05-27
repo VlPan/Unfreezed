@@ -43,7 +43,7 @@ export class NamespacesService {
   }
 
 
-  deleteTask(namespace: Namespace) {
+  deleteNamespace(namespace: Namespace) {
     const namespaces = this.namespaces();
     const nextNamespaces = produce(namespaces, draft => {
       delete draft[namespace.id];

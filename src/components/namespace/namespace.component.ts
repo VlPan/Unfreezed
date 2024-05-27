@@ -21,6 +21,8 @@ import { RandomTasksService } from '../../services/random-tasks.service';
 import { v4 as uuidv4 } from 'uuid';
 import { AddLinkDialogComponent } from '../dialogs/add-link-dialog/add-link-dialog.component';
 import { UIStateService } from '../../services/ui-state.service';
+import {MatMenuModule} from '@angular/material/menu';
+import {NamespacesService} from '../../services/namespaces.service';
 
 @Component({
   selector: 'app-namespace',
@@ -31,6 +33,7 @@ import { UIStateService } from '../../services/ui-state.service';
     NgStyle,
     NamespaceTaskComponent,
     MatIconModule,
+    MatMenuModule
   ],
   templateUrl: `namespace.component.html`,
   styleUrl: './namespace.component.scss',
@@ -45,7 +48,8 @@ export class NamespaceComponent {
     public dialog: MatDialog,
     private readonly taskService: TasksService,
     private randomTaskService: RandomTasksService,
-    public uiStateService: UIStateService
+    private namespaceService: NamespacesService,
+    public uiStateService: UIStateService,
   ) {}
 
   ngOnChanges() {
@@ -138,5 +142,9 @@ export class NamespaceComponent {
     this.taskService.updateTask(task.id, {
       isImportant,
     });
+  }
+
+  deleteNamespace() {
+    this.namespaceService.deleteNamespace(this.namespace);
   }
 }
